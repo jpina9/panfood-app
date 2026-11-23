@@ -285,17 +285,18 @@ window.analyzeMeal = async function(){
         const data =
             await response.json();
 
-        if(!data.success){
+       if (!data.success) {
 
-            result.innerHTML =
-            `
-            <div class="card">
-                ❌ ${data.error}
-            </div>
-            `;
+    result.innerHTML = `
+        <div class="card">
+            <pre>
+${JSON.stringify(data.error, null, 2)}
+            </pre>
+        </div>
+    `;
 
-            return;
-        }
+    return;
+}
 
         result.innerHTML =
         `
@@ -337,3 +338,4 @@ ${data.analysis}
         `;
     }
 };
+
