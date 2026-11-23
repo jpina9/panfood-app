@@ -1,2 +1,1 @@
-# PanFood App V4
-Perfil, motor nutricional, histórico de peso e análise de refeições.
+V4.1 corrige o botão Analisar e referências DOM.
