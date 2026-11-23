@@ -301,7 +301,7 @@ async function searchFood(foodName) {
 // ANÁLISE
 // ======================
 
-window.analyzeMeal = async function() {
+window.analyzeMeal = async function () {
 
     const result =
         document.getElementById("result");
@@ -324,32 +324,98 @@ window.analyzeMeal = async function() {
         return;
     }
 
-    let foodName =
+    const meal =
         document
             .getElementById("meal")
             .value
-            .trim()
-            .toLowerCase();
+            .trim();
 
-    if (!foodName) return;
+    if (!meal) {
 
-    foodName =
-        aliases[foodName] ||
-        foodName;
+        result.innerHTML = `
+            <p>
+                Introduza uma refeição.
+            </p>
+        `;
 
-    let food =
-        foods[foodName];
-
-    if (!food) {
-
-        result.innerHTML =
-            "🔍 A procurar alimento...";
-
-        food =
-            await searchFood(
-                foodName
-            );
+        return;
     }
+
+    result.innerHTML = `
+        <div class="card">
+            🤖 A analisar refeição...
+        </div>
+    `;
+
+    try {
+
+        const response =
+            await fetch(
+                "https://panfood.jpina9.workers.dev",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+                    body: JSON.stringify({
+                        meal,
+                        profile
+                    })
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if (!data.success) {
+
+            result.innerHTML = `
+                <div class="card">
+                    ❌ Erro:
+                    ${data.error}
+                </div>
+            `;
+
+            return;
+        }
+
+        result.innerHTML = `
+            <div class="card">
+
+                <h3>
+                    🤖 Análise IA
+                </h3>
+
+                <div style="
+                    white-space: pre-wrap;
+                    line-height: 1.6;
+                ">
+${data.analysis}
+                </div>
+
+            </div>
+        `;
+
+    } catch (error) {
+
+        console.error(error);
+
+        result.innerHTML = `
+            <div class="card">
+
+                <h3>
+                    ❌ Erro
+                </h3>
+
+                <p>
+                    Não foi possível contactar o serviço de IA.
+                </p>
+
+            </div>
+        `;
+    }
+};
 
     if (!food) {
 
@@ -468,3 +534,4 @@ window.analyzeMeal = async function() {
         </p>
     `;
 };
+
