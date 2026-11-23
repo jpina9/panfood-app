@@ -1,1 +1,0 @@
-import Dashboard from "./pages/Dashboard.jsx";import Analyzer from "./pages/Analyzer.jsx";import {load} from "./services/storage.js";export default function App(){const profile=load("profile",{weight:83,targetWeight:78,triglycerides:550,pancreatitis:true});return <div className="container"><h1>PanFood App V5.1</h1><Dashboard profile={profile}/><Analyzer profile={profile}/></div>}
