@@ -1,1 +1,0 @@
-export class NutritionEngine{constructor(profile){this.profile=profile;}evaluate(food){let score=10;if(this.profile.triglycerides>200&&food.sugar>10)score-=3;if(this.profile.pancreatitis&&food.fat>20)score-=3;if(food.protein>15)score+=1;if(food.fiber>3)score+=1;return Math.max(0,Math.min(score,10));}}
