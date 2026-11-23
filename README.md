@@ -1,1 +1,1 @@
-V4.1 corrige o botão Analisar e referências DOM.
+npm install && npm run dev
