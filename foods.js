@@ -1,0 +1,1 @@
+const foods={atum:{score:10,msg:"Recomendado 120-150g"},salada:{score:10,msg:"À vontade"},"pá de porco":{score:6,msg:"150g, moderado"},puré:{score:6,msg:"100-150g"},ameixa:{score:9,msg:"2 unidades"},refrigerante:{score:0,msg:"Evitar"}};
