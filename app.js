@@ -206,12 +206,10 @@ function renderWeights(){
 // GEMINI IA
 // ======================
 
-window.analyzeMeal = async function(){
+window.analyzeMeal = async function () {
 
     const result =
-        document.getElementById(
-            "result"
-        );
+        document.getElementById("result");
 
     const profile =
         JSON.parse(
@@ -220,17 +218,130 @@ window.analyzeMeal = async function(){
             )
         );
 
-    if(!profile){
+    if (!profile) {
 
-        result.innerHTML =
-        `
-        <div class="card">
-            Configure primeiro o perfil.
-        </div>
+        result.innerHTML = `
+            <div class="card">
+                Configure primeiro o perfil.
+            </div>
         `;
 
         return;
     }
+
+    const meal =
+        document
+            .getElementById("meal")
+            .value
+            .trim();
+
+    if (!meal) {
+
+        result.innerHTML = `
+            <div class="card">
+                Introduza uma refeição.
+            </div>
+        `;
+
+        return;
+    }
+
+    result.innerHTML = `
+        <div class="card">
+            🤖 A analisar refeição...
+        </div>
+    `;
+
+    try {
+
+        const response =
+            await fetch(
+                "https://panfood.jpina9.workers.dev",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+                    body: JSON.stringify({
+                        meal,
+                        profile
+                    })
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if (!data.success) {
+
+            result.innerHTML = `
+                <div class="card">
+
+                    <h3>
+                        ❌ Erro IA
+                    </h3>
+
+                    <pre style="
+                        white-space:pre-wrap;
+                        overflow:auto;
+                    ">
+${JSON.stringify(data.error, null, 2)}
+                    </pre>
+
+                </div>
+            `;
+
+            return;
+        }
+
+        result.innerHTML = `
+            <div class="card">
+
+                <h3>
+                    🤖 Análise IA
+                </h3>
+
+                <p>
+                    Modelo utilizado:
+                    <strong>${data.model}</strong>
+                </p>
+
+                <hr>
+
+                <div style="
+                    white-space:pre-wrap;
+                    line-height:1.6;
+                ">
+${data.analysis}
+                </div>
+
+            </div>
+        `;
+
+    } catch (error) {
+
+        console.error(error);
+
+        result.innerHTML = `
+            <div class="card">
+
+                <h3>
+                    ❌ Erro de ligação
+                </h3>
+
+                <p>
+                    Não foi possível contactar o Worker.
+                </p>
+
+                <pre>
+${error.message}
+                </pre>
+
+            </div>
+        `;
+    }
+};
 
     const meal =
         document
@@ -338,4 +449,5 @@ ${data.analysis}
         `;
     }
 };
+
 
