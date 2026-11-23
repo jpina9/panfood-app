@@ -1,2 +1,2 @@
-# PanFood App v3
-Aplicação nutricional baseada em perfil para pancreatite e triglicéridos.
+# PanFood App V4
+Perfil, motor nutricional, histórico de peso e análise de refeições.
