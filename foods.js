@@ -1,1 +1,0 @@
-export const foods={atum:{protein:25,fat:1,sugar:0,fiber:0},frango:{protein:30,fat:3,sugar:0,fiber:0},salada:{protein:1,fat:0,sugar:1,fiber:4},ameixa:{protein:1,fat:0,sugar:10,fiber:2},"arroz branco":{protein:2,fat:0,sugar:0,fiber:0},refrigerante:{protein:0,fat:0,sugar:35,fiber:0}};
