@@ -1,409 +1,343 @@
+const foods = {
+  "atum": {
+    protein: 25,
+    fat: 1,
+    sugar: 0,
+    fiber: 0
+  },
+
+  "frango": {
+    protein: 30,
+    fat: 3,
+    sugar: 0,
+    fiber: 0
+  },
+
+  "salada": {
+    protein: 1,
+    fat: 0,
+    sugar: 1,
+    fiber: 5
+  },
+
+  "ameixa": {
+    protein: 1,
+    fat: 0,
+    sugar: 10,
+    fiber: 2
+  },
+
+  "refrigerante": {
+    protein: 0,
+    fat: 0,
+    sugar: 35,
+    fiber: 0
+  },
+
+  "hambúrguer": {
+    protein: 18,
+    fat: 18,
+    sugar: 2,
+    fiber: 1
+  },
+
+  "pizza": {
+    protein: 12,
+    fat: 15,
+    sugar: 4,
+    fiber: 1
+  }
+};
+
 const aliases = {
 
-    "hambuguer":"hambúrguer",
-    "hamburguer":"hambúrguer",
+  "hamburguer": "hambúrguer",
+  "hambuguer": "hambúrguer",
 
-    "coca cola":"refrigerante",
-    "coca-cola":"refrigerante",
+  "coca cola": "refrigerante",
+  "coca-cola": "refrigerante",
 
-    "big mac":"hambúrguer",
+  "big mac": "hambúrguer",
 
-    "bk":"hambúrguer",
-
-    "mcdonalds":"hambúrguer"
+  "mcdonalds": "hambúrguer"
 };
 
-const localFoods = {
+window.onload = () => {
 
-    "atum":{
-        protein:25,
-        fat:1,
-        sugar:0,
-        fiber:0
-    },
+  loadProfile();
 
-    "frango":{
-        protein:30,
-        fat:3,
-        sugar:0,
-        fiber:0
-    },
+  renderWeights();
 
-    "salada":{
-        protein:1,
-        fat:0,
-        sugar:1,
-        fiber:5
-    },
-
-    "ameixa":{
-        protein:1,
-        fat:0,
-        sugar:10,
-        fiber:2
-    },
-
-    "hambúrguer":{
-        protein:18,
-        fat:18,
-        sugar:2,
-        fiber:1
-    },
-
-    "pizza":{
-        protein:12,
-        fat:15,
-        sugar:4,
-        fiber:1
-    },
-
-    "refrigerante":{
-        protein:0,
-        fat:0,
-        sugar:35,
-        fiber:0
-    }
 };
-
-loadProfile();
-renderWeights();
 
 function showPage(page){
 
-    document.getElementById(
-        "homePage"
-    ).style.display =
-        page === "home"
-        ? "block"
-        : "none";
+  const home =
+    document.getElementById("homePage");
 
-    document.getElementById(
-        "profilePage"
-    ).style.display =
-        page === "profile"
-        ? "block"
-        : "none";
+  const profile =
+    document.getElementById("profilePage");
+
+  if(page === "home"){
+
+    home.style.display = "block";
+    profile.style.display = "none";
+
+  }else{
+
+    home.style.display = "none";
+    profile.style.display = "block";
+
+  }
 }
 
 function saveProfile(){
 
-    const profile = {
+  const profile = {
 
-        weight:Number(
-            document.getElementById(
-                "weight"
-            ).value
-        ),
-
-        targetWeight:Number(
-            document.getElementById(
-                "targetWeight"
-            ).value
-        ),
-
-        triglycerides:Number(
-            document.getElementById(
-                "triglycerides"
-            ).value
-        ),
-
-        hdl:Number(
-            document.getElementById(
-                "hdl"
-            ).value
-        ),
-
-        pancreatitis:
+    weight:
+      Number(
         document.getElementById(
-            "pancreatitis"
-        ).checked
-    };
+          "weight"
+        ).value
+      ),
 
-    localStorage.setItem(
-        "panfood_profile",
-        JSON.stringify(profile)
-    );
+    targetWeight:
+      Number(
+        document.getElementById(
+          "targetWeight"
+        ).value
+      ),
 
-    alert(
-        "Perfil guardado."
-    );
+    triglycerides:
+      Number(
+        document.getElementById(
+          "triglycerides"
+        ).value
+      ),
+
+    hdl:
+      Number(
+        document.getElementById(
+          "hdl"
+        ).value
+      ),
+
+    pancreatitis:
+      document.getElementById(
+        "pancreatitis"
+      ).checked
+  };
+
+  localStorage.setItem(
+    "panfood_profile",
+    JSON.stringify(profile)
+  );
+
+  alert("Perfil guardado");
 }
 
 function loadProfile(){
 
-    const profile =
-        JSON.parse(
-            localStorage.getItem(
-                "panfood_profile"
-            )
-        );
+  const profile =
+    JSON.parse(
+      localStorage.getItem(
+        "panfood_profile"
+      )
+    );
 
-    if(!profile) return;
+  if(!profile) return;
 
-    weight.value =
-        profile.weight || "";
+  document.getElementById(
+    "weight"
+  ).value =
+    profile.weight || "";
 
-    targetWeight.value =
-        profile.targetWeight || "";
+  document.getElementById(
+    "targetWeight"
+  ).value =
+    profile.targetWeight || "";
 
-    triglycerides.value =
-        profile.triglycerides || "";
+  document.getElementById(
+    "triglycerides"
+  ).value =
+    profile.triglycerides || "";
 
-    hdl.value =
-        profile.hdl || "";
+  document.getElementById(
+    "hdl"
+  ).value =
+    profile.hdl || "";
 
-    pancreatitis.checked =
-        profile.pancreatitis || false;
+  document.getElementById(
+    "pancreatitis"
+  ).checked =
+    profile.pancreatitis || false;
 }
 
 function addWeight(){
 
-    const value =
-        Number(
-            document.getElementById(
-                "newWeight"
-            ).value
-        );
-
-    if(!value) return;
-
-    let history =
-        JSON.parse(
-            localStorage.getItem(
-                "panfood_weights"
-            )
-        ) || [];
-
-    history.push({
-
-        date:
-        new Date()
-        .toLocaleDateString(),
-
-        weight:value
-
-    });
-
-    localStorage.setItem(
-
-        "panfood_weights",
-
-        JSON.stringify(history)
-
+  const value =
+    Number(
+      document.getElementById(
+        "newWeight"
+      ).value
     );
 
-    renderWeights();
+  if(!value) return;
+
+  let history =
+    JSON.parse(
+      localStorage.getItem(
+        "panfood_weights"
+      )
+    ) || [];
+
+  history.push({
+
+    date:
+      new Date()
+      .toLocaleDateString(),
+
+    weight:value
+  });
+
+  localStorage.setItem(
+    "panfood_weights",
+    JSON.stringify(history)
+  );
+
+  renderWeights();
 }
 
 function renderWeights(){
 
-    const history =
-        JSON.parse(
-            localStorage.getItem(
-                "panfood_weights"
-            )
-        ) || [];
+  const history =
+    JSON.parse(
+      localStorage.getItem(
+        "panfood_weights"
+      )
+    ) || [];
 
-    weightHistory.innerHTML =
-        history
-        .map(x => `
-            <li>
-                ${x.date}
-                -
-                ${x.weight} kg
-            </li>
-        `)
-        .join("");
-}
-
-async function searchFood(foodName){
-
-    try{
-
-        const response =
-        await fetch(
-            `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(foodName)}&search_simple=1&json=1`
-        );
-
-        const data =
-            await response.json();
-
-        if(
-            !data.products ||
-            data.products.length === 0
-        ){
-            return null;
-        }
-
-        const product =
-            data.products[0];
-
-        return {
-
-            protein:
-            Number(product.nutriments?.proteins_100g) || 0,
-
-            fat:
-            Number(product.nutriments?.fat_100g) || 0,
-
-            sugar:
-            Number(product.nutriments?.sugars_100g) || 0,
-
-            fiber:
-            Number(product.nutriments?.fiber_100g) || 0
-        };
-
-    }catch{
-
-        return null;
-    }
+  document.getElementById(
+    "weightHistory"
+  ).innerHTML =
+    history.map(item => `
+      <li>
+      ${item.date}
+      -
+      ${item.weight} kg
+      </li>
+    `).join("");
 }
 
 async function analyzeMeal(){
 
-    const profile =
-        JSON.parse(
-            localStorage.getItem(
-                "panfood_profile"
-            )
-        );
+  const profile =
+    JSON.parse(
+      localStorage.getItem(
+        "panfood_profile"
+      )
+    );
 
-    if(!profile){
+  const result =
+    document.getElementById(
+      "result"
+    );
 
-        result.innerHTML =
-        `
-        <p class="result-bad">
-        Configure primeiro o Perfil.
-        </p>
-        `;
+  if(!profile){
 
-        return;
-    }
+    result.innerHTML =
+      "<p>Configure primeiro o perfil.</p>";
 
-    let score = 10;
+    return;
+  }
 
-    const text =
-        meal.value
-        .toLowerCase();
+  let foodName =
+    document
+      .getElementById("meal")
+      .value
+      .trim()
+      .toLowerCase();
 
-    let foodName =
-        aliases[text] || text;
+  foodName =
+    aliases[foodName] ||
+    foodName;
 
-    let food =
-        localFoods[foodName];
+  let food =
+    foods[foodName];
 
-    if(!food){
-
-        food =
-        await searchFood(
-            foodName
-        );
-    }
-
-    if(!food){
-
-        result.innerHTML = `
-            <p class="result-bad">
-            Não consegui identificar esse alimento.
-            </p>
-        `;
-
-        return;
-    }
-
-    if(
-        profile.triglycerides > 200 &&
-        food.sugar > 10
-    ){
-
-        score -= 3;
-    }
-
-    if(
-        profile.pancreatitis &&
-        food.fat > 20
-    ){
-
-        score -= 3;
-    }
-
-    if(food.protein > 15){
-
-        score += 1;
-    }
-
-    if(food.fiber > 3){
-
-        score += 1;
-    }
-
-    score =
-        Math.max(
-            0,
-            Math.min(
-                10,
-                score
-            )
-        );
-
-    let className;
-    let recommendation;
-
-    if(score >= 8){
-
-        className =
-            "result-good";
-
-        recommendation =
-            "✅ Recomendado";
-
-    }else if(score >= 5){
-
-        className =
-            "result-medium";
-
-        recommendation =
-            "⚠️ Moderado";
-
-    }else{
-
-        className =
-            "result-bad";
-
-        recommendation =
-            "❌ Evitar";
-    }
+  if(!food){
 
     result.innerHTML = `
-
-        <h3 class="${className}">
-            ${recommendation}
-        </h3>
-
-        <p>
-            Pontuação:
-            ${score}/10
-        </p>
-
-        <p>
-            Proteína:
-            ${food.protein}
-        </p>
-
-        <p>
-            Gordura:
-            ${food.fat}
-        </p>
-
-        <p>
-            Açúcar:
-            ${food.sugar}
-        </p>
-
-        <p>
-            Fibra:
-            ${food.fiber}
-        </p>
-
+      <h3>⚠️ Alimento desconhecido</h3>
+      <p>
+      Ainda não existe na base de dados.
+      </p>
     `;
+
+    return;
+  }
+
+  let score = 10;
+
+  if(
+    profile.triglycerides > 200 &&
+    food.sugar > 10
+  ){
+
+    score -= 3;
+  }
+
+  if(
+    profile.pancreatitis &&
+    food.fat > 20
+  ){
+
+    score -= 3;
+  }
+
+  if(food.protein > 15){
+
+    score += 1;
+  }
+
+  if(food.fiber > 3){
+
+    score += 1;
+  }
+
+  score =
+    Math.max(
+      0,
+      Math.min(score,10)
+    );
+
+  let recommendation;
+
+  if(score >= 8){
+
+    recommendation =
+      "✅ Recomendado";
+
+  }else if(score >= 5){
+
+    recommendation =
+      "⚠️ Moderado";
+
+  }else{
+
+    recommendation =
+      "❌ Evitar";
+  }
+
+  result.innerHTML = `
+    <h3>${recommendation}</h3>
+
+    <p>Pontuação: ${score}/10</p>
+
+    <p>Proteína: ${food.protein}</p>
+    <p>Gordura: ${food.fat}</p>
+    <p>Açúcar: ${food.sugar}</p>
+    <p>Fibra: ${food.fiber}</p>
+  `;
 }
