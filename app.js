@@ -1,5 +1,5 @@
 // ======================
-// ARRANQUE
+// INICIALIZAÇÃO
 // ======================
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -16,14 +16,10 @@ document.addEventListener("DOMContentLoaded", () => {
 window.showPage = function(page){
 
     const homePage =
-        document.getElementById(
-            "homePage"
-        );
+        document.getElementById("homePage");
 
     const profilePage =
-        document.getElementById(
-            "profilePage"
-        );
+        document.getElementById("profilePage");
 
     if(page === "home"){
 
@@ -33,7 +29,7 @@ window.showPage = function(page){
         profilePage.style.display =
             "none";
 
-    }else{
+    } else {
 
         homePage.style.display =
             "none";
@@ -52,33 +48,26 @@ window.saveProfile = function(){
     const profile = {
 
         weight:Number(
-            document.getElementById(
-                "weight"
-            ).value
+            document.getElementById("weight").value
         ) || 0,
 
         targetWeight:Number(
-            document.getElementById(
-                "targetWeight"
-            ).value
+            document.getElementById("targetWeight").value
         ) || 0,
 
         triglycerides:Number(
-            document.getElementById(
-                "triglycerides"
-            ).value
+            document.getElementById("triglycerides").value
         ) || 0,
 
         hdl:Number(
-            document.getElementById(
-                "hdl"
-            ).value
+            document.getElementById("hdl").value
         ) || 0,
 
         pancreatitis:
             document.getElementById(
                 "pancreatitis"
             ).checked
+
     };
 
     localStorage.setItem(
@@ -86,9 +75,7 @@ window.saveProfile = function(){
         JSON.stringify(profile)
     );
 
-    alert(
-        "Perfil guardado."
-    );
+    alert("Perfil guardado.");
 };
 
 function loadProfile(){
@@ -129,19 +116,19 @@ function loadProfile(){
 }
 
 // ======================
-// HISTÓRICO PESO
+// PESOS
 // ======================
 
 window.addWeight = function(){
 
-    const value =
+    const weight =
         Number(
             document.getElementById(
                 "newWeight"
             ).value
         );
 
-    if(!value) return;
+    if(!weight) return;
 
     let history =
         JSON.parse(
@@ -152,13 +139,11 @@ window.addWeight = function(){
 
     history.push({
 
-        weight:value,
+        weight,
 
         date:
         new Date()
-            .toLocaleDateString(
-                "pt-PT"
-            )
+            .toLocaleDateString("pt-PT")
 
     });
 
@@ -181,8 +166,6 @@ function renderWeights(){
             "weightHistory"
         );
 
-    if(!list) return;
-
     const history =
         JSON.parse(
             localStorage.getItem(
@@ -194,22 +177,22 @@ function renderWeights(){
         history
         .map(item => `
             <li>
-                ${item.date}
-                -
-                ${item.weight} kg
+                ${item.date} - ${item.weight} kg
             </li>
         `)
         .join("");
 }
 
 // ======================
-// GEMINI IA
+// IA
 // ======================
 
-window.analyzeMeal = async function () {
+window.analyzeMeal = async function(){
 
     const result =
-        document.getElementById("result");
+        document.getElementById(
+            "result"
+        );
 
     const profile =
         JSON.parse(
@@ -218,7 +201,7 @@ window.analyzeMeal = async function () {
             )
         );
 
-    if (!profile) {
+    if(!profile){
 
         result.innerHTML = `
             <div class="card">
@@ -231,11 +214,11 @@ window.analyzeMeal = async function () {
 
     const meal =
         document
-            .getElementById("meal")
-            .value
-            .trim();
+        .getElementById("meal")
+        .value
+        .trim();
 
-    if (!meal) {
+    if(!meal){
 
         result.innerHTML = `
             <div class="card">
@@ -250,124 +233,6 @@ window.analyzeMeal = async function () {
         <div class="card">
             🤖 A analisar refeição...
         </div>
-    `;
-
-    try {
-
-        const response =
-            await fetch(
-                "https://panfood.jpina9.workers.dev",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-                    body: JSON.stringify({
-                        meal,
-                        profile
-                    })
-                }
-            );
-
-        const data =
-            await response.json();
-
-        if (!data.success) {
-
-            result.innerHTML = `
-                <div class="card">
-
-                    <h3>
-                        ❌ Erro IA
-                    </h3>
-
-                    <pre style="
-                        white-space:pre-wrap;
-                        overflow:auto;
-                    ">
-${JSON.stringify(data.error, null, 2)}
-                    </pre>
-
-                </div>
-            `;
-
-            return;
-        }
-
-        result.innerHTML = `
-            <div class="card">
-
-                <h3>
-                    🤖 Análise IA
-                </h3>
-
-                <p>
-                    Modelo utilizado:
-                    <strong>${data.model}</strong>
-                </p>
-
-                <hr>
-
-                <div style="
-                    white-space:pre-wrap;
-                    line-height:1.6;
-                ">
-${data.analysis}
-                </div>
-
-            </div>
-        `;
-
-    } catch (error) {
-
-        console.error(error);
-
-        result.innerHTML = `
-            <div class="card">
-
-                <h3>
-                    ❌ Erro de ligação
-                </h3>
-
-                <p>
-                    Não foi possível contactar o Worker.
-                </p>
-
-                <pre>
-${error.message}
-                </pre>
-
-            </div>
-        `;
-    }
-};
-
-    const meal =
-        document
-        .getElementById(
-            "meal"
-        )
-        .value
-        .trim();
-
-    if(!meal){
-
-        result.innerHTML =
-        `
-        <div class="card">
-            Introduza uma refeição.
-        </div>
-        `;
-
-        return;
-    }
-
-    result.innerHTML =
-    `
-    <div class="card">
-        🤖 A analisar refeição...
-    </div>
     `;
 
     try{
@@ -386,7 +251,6 @@ ${error.message}
                     body:JSON.stringify({
 
                         meal,
-
                         profile
 
                     })
@@ -396,58 +260,71 @@ ${error.message}
         const data =
             await response.json();
 
-       if (!data.success) {
+        if(!data.success){
 
-    result.innerHTML = `
-        <div class="card">
-            <pre>
-${JSON.stringify(data.error, null, 2)}
-            </pre>
-        </div>
-    `;
+            result.innerHTML = `
+                <div class="card">
+                    <h3>
+                        ❌ Erro IA
+                    </h3>
 
-    return;
-}
+                    <pre style="
+                    white-space:pre-wrap;
+                    overflow:auto;">
+${JSON.stringify(
+    data.error,
+    null,
+    2
+)}
+                    </pre>
+                </div>
+            `;
 
-        result.innerHTML =
-        `
-        <div class="card">
+            return;
+        }
 
-            <h3>
-                🤖 Análise IA
-            </h3>
+        result.innerHTML = `
+            <div class="card">
 
-            <div
-            style="
-                white-space:pre-wrap;
-                line-height:1.6;
-            "
-            >
+                <h3>
+                    🤖 Análise IA
+                </h3>
+
+                <p>
+                    Modelo:
+                    <strong>
+                        ${data.model}
+                    </strong>
+                </p>
+
+                <hr>
+
+                <div style="
+                    white-space:pre-wrap;
+                    line-height:1.6;
+                ">
 ${data.analysis}
-            </div>
+                </div>
 
-        </div>
+            </div>
         `;
 
-    }catch(error){
+    } catch(error){
 
         console.error(error);
 
-        result.innerHTML =
-        `
-        <div class="card">
+        result.innerHTML = `
+            <div class="card">
 
-            <h3>
-                ❌ Erro
-            </h3>
+                <h3>
+                    ❌ Erro de ligação
+                </h3>
 
-            <p>
-                Não foi possível contactar o Gemini.
-            </p>
+                <pre>
+${error.message}
+                </pre>
 
-        </div>
+            </div>
         `;
     }
 };
-
-
