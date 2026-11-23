@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Assistente Nutricional - Pancreatite</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f5f7fa;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    color:#1f4e79;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    font-size:16px;
+}
+
+button{
+    margin-top:10px;
+    padding:12px 20px;
+    background:#1f4e79;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#163954;
+}
+
+.result{
+    margin-top:20px;
+    padding:20px;
+    border-radius:10px;
+    background:#eef5ff;
+}
+
+.good{
+    color:green;
+    font-weight:bold;
+}
+
+.medium{
+    color:orange;
+    font-weight:bold;
+}
+
+.bad{
+    color:red;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🥗 Assistente Nutricional</h1>
+
+<p>
+Adaptado para:
+<br>
+✅ Pancreatite Autoimune
+<br>
+✅ Triglicéridos Elevados
+<br>
+✅ Risco de Diabetes
+</p>
+
+<input id="foodInput" placeholder="Ex: atum, ameixa, pá de porco">
+
+<button onclick="analisar()">
+Analisar
+</button>
+
+<div id="resultado" class="result">
+Introduz um alimento...
+</div>
+
+</div>
+
+<script>
+
+const alimentos = {
+
+"atum":{
+estado:"good",
+texto:`
+✅ RECOMENDADO
+
+Dose:
+120-150g
+
+Frequência:
+2-4x por semana
+
+Proteína magra.
+Pouco impacto nos triglicéridos.
+`
+},
+
+"ameixa":{
+estado:"good",
+texto:`
+✅ RECOMENDADO
+
+Dose:
+2 unidades médias
+
+Boa fonte de fibra.
+Baixo impacto glicémico.
+`
+},
+
+"maçã":{
+estado:"good",
+texto:`
+✅ RECOMENDADO
+
+Dose:
+1 unidade média
+`
+},
+
+"pera":{
+estado:"good",
+texto:`
+✅ RECOMENDADO
+
+Dose:
+1 unidade média
+`
+},
+
+"requeijão":{
+estado:"good",
+texto:`
+✅ RECOMENDADO
+
+Dose:
+60-80g
+
+Preferir versão magra.
+`
+},
+
+"frango":{
+estado:"good",
+texto:`
+✅ RECOMENDADO
+
+Dose:
+150-200g
+`
+},
+
+"peru":{
+estado:"good",
+texto:`
+✅ RECOMENDADO
+
+Dose:
+150-200g
+`
+},
+
+"lombo de porco":{
+estado:"medium",
+texto:`
+⚠️ CONSUMO MODERADO
+
+Dose:
+150g
+
+1-2 vezes por semana.
+`
+},
+
+"pá de porco":{
+estado:"medium",
+texto:`
+⚠️ CONSUMO MODERADO
+
+Dose:
+150g
+
+Retirar gordura visível.
+`
+},
+
+"banana":{
+estado:"medium",
+texto:`
+⚠️ MODERADO
+
+Dose:
+1 unidade pequena.
+`
+},
+
+"arroz branco":{
+estado:"medium",
+texto:`
+⚠️ MODERADO
+
+Dose:
+70g cozinhado.
+`
+},
+
+"puré":{
+estado:"medium",
+texto:`
+⚠️ MODERADO
+
+Dose:
+100-150g
+
+Evitar manteiga e natas.
+`
+},
+
+"uvas":{
+estado:"bad",
+texto:`
+❌ LIMITAR
+
+Maior carga de açúcar.
+`
+},
+
+"manga":{
+estado:"bad",
+texto:`
+❌ LIMITAR
+
+Consumir apenas ocasionalmente.
+`
+},
+
+"refrigerante":{
+estado:"bad",
+texto:`
+❌ EVITAR
+
+Muito açúcar.
+Aumenta triglicéridos.
+`
+},
+
+"bolachas":{
+estado:"bad",
+texto:`
+❌ EVITAR
+
+Elevado teor de açúcar.
+`
+},
+
+"bolo":{
+estado:"bad",
+texto:`
+❌ EVITAR
+`
+}
+
+};
+
+function analisar(){
+
+const valor =
+document
+.getElementById("foodInput")
+.value
+.toLowerCase()
+.trim();
+
+const resultado =
+document.getElementById("resultado");
+
+if(alimentos[valor]){
+
+const item = alimentos[valor];
+
+resultado.innerHTML =
+`<div class="${item.estado}">
+${item.texto}
+</div>`;
+}
+else{
+
+resultado.innerHTML = `
+⚠️ Alimento ainda não registado.
+
+Sugestão para o teu perfil:
+
+✅ Proteínas magras
+✅ Legumes
+✅ Fruta moderada
+
+❌ Evitar açúcar e ultraprocessados
+`;
+}
+
+}
+</script>
+
+</body>
+</html>
