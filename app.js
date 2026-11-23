@@ -190,4 +190,281 @@ window.addWeight = function() {
             )
         ) || [];
 
-   
+    history.push({
+        weight: weight,
+        date: new Date()
+            .toLocaleDateString("pt-PT")
+    });
+
+    localStorage.setItem(
+        "panfood_weights",
+        JSON.stringify(history)
+    );
+
+    document.getElementById(
+        "newWeight"
+    ).value = "";
+
+    renderWeights();
+};
+
+function renderWeights() {
+
+    const list =
+        document.getElementById(
+            "weightHistory"
+        );
+
+    if (!list) return;
+
+    const history =
+        JSON.parse(
+            localStorage.getItem(
+                "panfood_weights"
+            )
+        ) || [];
+
+    list.innerHTML =
+        history
+            .map(item => `
+                <li>
+                    ${item.date}
+                    - 
+                    ${item.weight} kg
+                </li>
+            `)
+            .join("");
+}
+
+// ======================
+// OPEN FOOD FACTS
+// ======================
+
+async function searchFood(foodName) {
+
+    try {
+
+        const response =
+            await fetch(
+                `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(foodName)}&search_simple=1&json=1`
+            );
+
+        const data =
+            await response.json();
+
+        if (
+            !data.products ||
+            data.products.length === 0
+        ) {
+            return null;
+        }
+
+        const product =
+            data.products[0];
+
+        return {
+
+            protein:
+                Number(
+                    product.nutriments?.proteins_100g
+                ) || 0,
+
+            fat:
+                Number(
+                    product.nutriments?.fat_100g
+                ) || 0,
+
+            sugar:
+                Number(
+                    product.nutriments?.sugars_100g
+                ) || 0,
+
+            fiber:
+                Number(
+                    product.nutriments?.fiber_100g
+                ) || 0,
+
+            productName:
+                product.product_name ||
+                foodName
+        };
+
+    } catch (error) {
+
+        console.error(error);
+
+        return null;
+    }
+}
+
+// ======================
+// ANÁLISE
+// ======================
+
+window.analyzeMeal = async function() {
+
+    const result =
+        document.getElementById("result");
+
+    const profile =
+        JSON.parse(
+            localStorage.getItem(
+                "panfood_profile"
+            )
+        );
+
+    if (!profile) {
+
+        result.innerHTML = `
+            <p>
+                Configure primeiro o perfil.
+            </p>
+        `;
+
+        return;
+    }
+
+    let foodName =
+        document
+            .getElementById("meal")
+            .value
+            .trim()
+            .toLowerCase();
+
+    if (!foodName) return;
+
+    foodName =
+        aliases[foodName] ||
+        foodName;
+
+    let food =
+        foods[foodName];
+
+    if (!food) {
+
+        result.innerHTML =
+            "🔍 A procurar alimento...";
+
+        food =
+            await searchFood(
+                foodName
+            );
+    }
+
+    if (!food) {
+
+        result.innerHTML = `
+            <h3>❌ Não encontrado</h3>
+            <p>
+                Não encontrei informação suficiente.
+            </p>
+        `;
+
+        return;
+    }
+
+    let score = 10;
+
+    let reasons = [];
+
+    if (
+        profile.triglycerides > 200 &&
+        food.sugar > 10
+    ) {
+
+        score -= 3;
+
+        reasons.push(
+            "Açúcar elevado"
+        );
+    }
+
+    if (
+        profile.pancreatitis &&
+        food.fat > 20
+    ) {
+
+        score -= 3;
+
+        reasons.push(
+            "Gordura elevada"
+        );
+    }
+
+    if (food.protein > 15) {
+
+        score += 1;
+
+        reasons.push(
+            "Boa proteína"
+        );
+    }
+
+    if (food.fiber > 3) {
+
+        score += 1;
+
+        reasons.push(
+            "Boa fibra"
+        );
+    }
+
+    score =
+        Math.max(
+            0,
+            Math.min(score, 10)
+        );
+
+    let recommendation;
+
+    if (score >= 8) {
+
+        recommendation =
+            "✅ Recomendado";
+
+    } else if (score >= 5) {
+
+        recommendation =
+            "⚠️ Moderado";
+
+    } else {
+
+        recommendation =
+            "❌ Evitar";
+    }
+
+    result.innerHTML = `
+        <h3>${recommendation}</h3>
+
+        <p>
+            Pontuação:
+            ${score}/10
+        </p>
+
+        <p>
+            Proteína:
+            ${food.protein}
+        </p>
+
+        <p>
+            Gordura:
+            ${food.fat}
+        </p>
+
+        <p>
+            Açúcar:
+            ${food.sugar}
+        </p>
+
+        <p>
+            Fibra:
+            ${food.fiber}
+        </p>
+
+        <hr>
+
+        <p>
+            ${reasons.join("<br>")}
+        </p>
+    `;
+};
