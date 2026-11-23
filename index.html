@@ -2,8 +2,7 @@
 <html lang="pt">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PanFood</title>
 
 <link rel="stylesheet" href="style.css">
@@ -15,7 +14,7 @@
 
 <h1>🥗 PanFood</h1>
 
-<nav>
+<div class="menu">
 
 <button onclick="showPage('home')">
 🏠 Analisar
@@ -25,7 +24,7 @@
 👤 Perfil
 </button>
 
-</nav>
+</div>
 
 </header>
 
@@ -39,8 +38,8 @@
 
 <textarea
 id="meal"
-placeholder="Ex: hambúrguer com batatas fritas e coca cola"
-></textarea>
+placeholder="Ex: hambúrguer com batatas fritas e coca cola">
+</textarea>
 
 <button onclick="analyzeMeal()">
 Analisar
@@ -62,24 +61,25 @@ style="display:none"
 <h2>Perfil</h2>
 
 <label>Peso Atual</label>
-<input id="weight" type="number">
+<input type="number" id="weight">
 
 <label>Peso Objetivo</label>
-<input id="targetWeight" type="number">
+<input type="number" id="targetWeight">
 
 <label>Triglicéridos</label>
-<input id="triglycerides" type="number">
+<input type="number" id="triglycerides">
 
 <label>HDL</label>
-<input id="hdl" type="number">
+<input type="number" id="hdl">
 
 <label>
 <input
-id="pancreatitis"
 type="checkbox"
->
+id="pancreatitis">
 Histórico de Pancreatite
 </label>
+
+<br><br>
 
 <button onclick="saveProfile()">
 Guardar Perfil
@@ -94,8 +94,7 @@ Guardar Perfil
 <input
 id="newWeight"
 type="number"
-placeholder="Adicionar Peso"
->
+placeholder="Novo Peso">
 
 <button onclick="addWeight()">
 Guardar Peso
