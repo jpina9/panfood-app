@@ -1,0 +1,1 @@
+export function save(k,v){localStorage.setItem(k,JSON.stringify(v));} export function load(k,f){const d=localStorage.getItem(k); return d?JSON.parse(d):f;}

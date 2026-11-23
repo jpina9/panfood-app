@@ -1,0 +1,1 @@
+export default function Dashboard({profile}){return <div className="card"><h2>Dashboard</h2><p>Peso: {profile.weight} kg</p><p>Objetivo: {profile.targetWeight} kg</p><p>Triglicéridos: {profile.triglycerides}</p></div>}
