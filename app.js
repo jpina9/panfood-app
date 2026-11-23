@@ -1,343 +1,193 @@
-const foods = {
-  "atum": {
-    protein: 25,
-    fat: 1,
-    sugar: 0,
-    fiber: 0
-  },
-
-  "frango": {
-    protein: 30,
-    fat: 3,
-    sugar: 0,
-    fiber: 0
-  },
-
-  "salada": {
-    protein: 1,
-    fat: 0,
-    sugar: 1,
-    fiber: 5
-  },
-
-  "ameixa": {
-    protein: 1,
-    fat: 0,
-    sugar: 10,
-    fiber: 2
-  },
-
-  "refrigerante": {
-    protein: 0,
-    fat: 0,
-    sugar: 35,
-    fiber: 0
-  },
-
-  "hambúrguer": {
-    protein: 18,
-    fat: 18,
-    sugar: 2,
-    fiber: 1
-  },
-
-  "pizza": {
-    protein: 12,
-    fat: 15,
-    sugar: 4,
-    fiber: 1
-  }
-};
+// ======================
+// CONFIGURAÇÃO
+// ======================
 
 const aliases = {
-
-  "hamburguer": "hambúrguer",
-  "hambuguer": "hambúrguer",
-
-  "coca cola": "refrigerante",
-  "coca-cola": "refrigerante",
-
-  "big mac": "hambúrguer",
-
-  "mcdonalds": "hambúrguer"
+    "hamburguer": "hambúrguer",
+    "hambuguer": "hambúrguer",
+    "coca cola": "refrigerante",
+    "coca-cola": "refrigerante",
+    "big mac": "hambúrguer",
+    "mcdonalds": "hambúrguer"
 };
 
-window.onload = () => {
+const foods = {
+    "atum": {
+        protein: 25,
+        fat: 1,
+        sugar: 0,
+        fiber: 0
+    },
 
-  loadProfile();
+    "frango": {
+        protein: 30,
+        fat: 3,
+        sugar: 0,
+        fiber: 0
+    },
 
-  renderWeights();
+    "salada": {
+        protein: 1,
+        fat: 0,
+        sugar: 1,
+        fiber: 5
+    },
 
+    "ameixa": {
+        protein: 1,
+        fat: 0,
+        sugar: 10,
+        fiber: 2
+    },
+
+    "hambúrguer": {
+        protein: 18,
+        fat: 18,
+        sugar: 2,
+        fiber: 1
+    },
+
+    "pizza": {
+        protein: 12,
+        fat: 15,
+        sugar: 4,
+        fiber: 1
+    },
+
+    "refrigerante": {
+        protein: 0,
+        fat: 0,
+        sugar: 35,
+        fiber: 0
+    }
 };
 
-function showPage(page){
+// ======================
+// ARRANQUE
+// ======================
 
-  const home =
-    document.getElementById("homePage");
+document.addEventListener("DOMContentLoaded", () => {
 
-  const profile =
-    document.getElementById("profilePage");
+    loadProfile();
 
-  if(page === "home"){
+    renderWeights();
 
-    home.style.display = "block";
-    profile.style.display = "none";
+});
 
-  }else{
+// ======================
+// NAVEGAÇÃO
+// ======================
 
-    home.style.display = "none";
-    profile.style.display = "block";
+window.showPage = function(page) {
 
-  }
-}
+    const homePage =
+        document.getElementById("homePage");
 
-function saveProfile(){
+    const profilePage =
+        document.getElementById("profilePage");
 
-  const profile = {
+    if (!homePage || !profilePage) {
+        console.error("Páginas não encontradas");
+        return;
+    }
 
-    weight:
-      Number(
-        document.getElementById(
-          "weight"
-        ).value
-      ),
+    if (page === "home") {
 
-    targetWeight:
-      Number(
-        document.getElementById(
-          "targetWeight"
-        ).value
-      ),
+        homePage.style.display = "block";
+        profilePage.style.display = "none";
 
-    triglycerides:
-      Number(
-        document.getElementById(
-          "triglycerides"
-        ).value
-      ),
+    } else {
 
-    hdl:
-      Number(
-        document.getElementById(
-          "hdl"
-        ).value
-      ),
+        homePage.style.display = "none";
+        profilePage.style.display = "block";
+    }
+};
 
-    pancreatitis:
-      document.getElementById(
-        "pancreatitis"
-      ).checked
-  };
+// ======================
+// PERFIL
+// ======================
 
-  localStorage.setItem(
-    "panfood_profile",
-    JSON.stringify(profile)
-  );
+window.saveProfile = function() {
 
-  alert("Perfil guardado");
-}
+    const profile = {
 
-function loadProfile(){
+        weight: Number(
+            document.getElementById("weight").value
+        ) || 0,
 
-  const profile =
-    JSON.parse(
-      localStorage.getItem(
-        "panfood_profile"
-      )
+        targetWeight: Number(
+            document.getElementById("targetWeight").value
+        ) || 0,
+
+        triglycerides: Number(
+            document.getElementById("triglycerides").value
+        ) || 0,
+
+        hdl: Number(
+            document.getElementById("hdl").value
+        ) || 0,
+
+        pancreatitis:
+            document.getElementById(
+                "pancreatitis"
+            ).checked
+    };
+
+    localStorage.setItem(
+        "panfood_profile",
+        JSON.stringify(profile)
     );
 
-  if(!profile) return;
+    alert("Perfil guardado com sucesso.");
+};
 
-  document.getElementById(
-    "weight"
-  ).value =
-    profile.weight || "";
+function loadProfile() {
 
-  document.getElementById(
-    "targetWeight"
-  ).value =
-    profile.targetWeight || "";
+    const profile =
+        JSON.parse(
+            localStorage.getItem(
+                "panfood_profile"
+            )
+        );
 
-  document.getElementById(
-    "triglycerides"
-  ).value =
-    profile.triglycerides || "";
+    if (!profile) return;
 
-  document.getElementById(
-    "hdl"
-  ).value =
-    profile.hdl || "";
+    document.getElementById("weight").value =
+        profile.weight || "";
 
-  document.getElementById(
-    "pancreatitis"
-  ).checked =
-    profile.pancreatitis || false;
+    document.getElementById("targetWeight").value =
+        profile.targetWeight || "";
+
+    document.getElementById("triglycerides").value =
+        profile.triglycerides || "";
+
+    document.getElementById("hdl").value =
+        profile.hdl || "";
+
+    document.getElementById("pancreatitis").checked =
+        profile.pancreatitis || false;
 }
 
-function addWeight(){
+// ======================
+// HISTÓRICO DE PESO
+// ======================
 
-  const value =
-    Number(
-      document.getElementById(
-        "newWeight"
-      ).value
-    );
+window.addWeight = function() {
 
-  if(!value) return;
+    const weight =
+        Number(
+            document.getElementById(
+                "newWeight"
+            ).value
+        );
 
-  let history =
-    JSON.parse(
-      localStorage.getItem(
-        "panfood_weights"
-      )
-    ) || [];
+    if (!weight) return;
 
-  history.push({
+    let history =
+        JSON.parse(
+            localStorage.getItem(
+                "panfood_weights"
+            )
+        ) || [];
 
-    date:
-      new Date()
-      .toLocaleDateString(),
-
-    weight:value
-  });
-
-  localStorage.setItem(
-    "panfood_weights",
-    JSON.stringify(history)
-  );
-
-  renderWeights();
-}
-
-function renderWeights(){
-
-  const history =
-    JSON.parse(
-      localStorage.getItem(
-        "panfood_weights"
-      )
-    ) || [];
-
-  document.getElementById(
-    "weightHistory"
-  ).innerHTML =
-    history.map(item => `
-      <li>
-      ${item.date}
-      -
-      ${item.weight} kg
-      </li>
-    `).join("");
-}
-
-async function analyzeMeal(){
-
-  const profile =
-    JSON.parse(
-      localStorage.getItem(
-        "panfood_profile"
-      )
-    );
-
-  const result =
-    document.getElementById(
-      "result"
-    );
-
-  if(!profile){
-
-    result.innerHTML =
-      "<p>Configure primeiro o perfil.</p>";
-
-    return;
-  }
-
-  let foodName =
-    document
-      .getElementById("meal")
-      .value
-      .trim()
-      .toLowerCase();
-
-  foodName =
-    aliases[foodName] ||
-    foodName;
-
-  let food =
-    foods[foodName];
-
-  if(!food){
-
-    result.innerHTML = `
-      <h3>⚠️ Alimento desconhecido</h3>
-      <p>
-      Ainda não existe na base de dados.
-      </p>
-    `;
-
-    return;
-  }
-
-  let score = 10;
-
-  if(
-    profile.triglycerides > 200 &&
-    food.sugar > 10
-  ){
-
-    score -= 3;
-  }
-
-  if(
-    profile.pancreatitis &&
-    food.fat > 20
-  ){
-
-    score -= 3;
-  }
-
-  if(food.protein > 15){
-
-    score += 1;
-  }
-
-  if(food.fiber > 3){
-
-    score += 1;
-  }
-
-  score =
-    Math.max(
-      0,
-      Math.min(score,10)
-    );
-
-  let recommendation;
-
-  if(score >= 8){
-
-    recommendation =
-      "✅ Recomendado";
-
-  }else if(score >= 5){
-
-    recommendation =
-      "⚠️ Moderado";
-
-  }else{
-
-    recommendation =
-      "❌ Evitar";
-  }
-
-  result.innerHTML = `
-    <h3>${recommendation}</h3>
-
-    <p>Pontuação: ${score}/10</p>
-
-    <p>Proteína: ${food.protein}</p>
-    <p>Gordura: ${food.fat}</p>
-    <p>Açúcar: ${food.sugar}</p>
-    <p>Fibra: ${food.fiber}</p>
-  `;
-}
+   
