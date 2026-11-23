@@ -3,17 +3,15 @@
 // ======================
 
 document.addEventListener("DOMContentLoaded", () => {
-
     loadProfile();
     renderWeights();
-
 });
 
 // ======================
 // NAVEGAÇÃO
 // ======================
 
-window.showPage = function(page){
+window.showPage = function(page) {
 
     const homePage =
         document.getElementById("homePage");
@@ -21,21 +19,15 @@ window.showPage = function(page){
     const profilePage =
         document.getElementById("profilePage");
 
-    if(page === "home"){
+    if (page === "home") {
 
-        homePage.style.display =
-            "block";
-
-        profilePage.style.display =
-            "none";
+        homePage.style.display = "block";
+        profilePage.style.display = "none";
 
     } else {
 
-        homePage.style.display =
-            "none";
-
-        profilePage.style.display =
-            "block";
+        homePage.style.display = "none";
+        profilePage.style.display = "block";
     }
 };
 
@@ -43,23 +35,23 @@ window.showPage = function(page){
 // PERFIL
 // ======================
 
-window.saveProfile = function(){
+window.saveProfile = function() {
 
     const profile = {
 
-        weight:Number(
+        weight: Number(
             document.getElementById("weight").value
         ) || 0,
 
-        targetWeight:Number(
+        targetWeight: Number(
             document.getElementById("targetWeight").value
         ) || 0,
 
-        triglycerides:Number(
+        triglycerides: Number(
             document.getElementById("triglycerides").value
         ) || 0,
 
-        hdl:Number(
+        hdl: Number(
             document.getElementById("hdl").value
         ) || 0,
 
@@ -78,7 +70,7 @@ window.saveProfile = function(){
     alert("Perfil guardado.");
 };
 
-function loadProfile(){
+function loadProfile() {
 
     const profile =
         JSON.parse(
@@ -87,39 +79,29 @@ function loadProfile(){
             )
         );
 
-    if(!profile) return;
+    if (!profile) return;
 
-    document.getElementById(
-        "weight"
-    ).value =
+    document.getElementById("weight").value =
         profile.weight || "";
 
-    document.getElementById(
-        "targetWeight"
-    ).value =
+    document.getElementById("targetWeight").value =
         profile.targetWeight || "";
 
-    document.getElementById(
-        "triglycerides"
-    ).value =
+    document.getElementById("triglycerides").value =
         profile.triglycerides || "";
 
-    document.getElementById(
-        "hdl"
-    ).value =
+    document.getElementById("hdl").value =
         profile.hdl || "";
 
-    document.getElementById(
-        "pancreatitis"
-    ).checked =
+    document.getElementById("pancreatitis").checked =
         profile.pancreatitis || false;
 }
 
 // ======================
-// PESOS
+// HISTÓRICO PESO
 // ======================
 
-window.addWeight = function(){
+window.addWeight = function() {
 
     const weight =
         Number(
@@ -128,7 +110,7 @@ window.addWeight = function(){
             ).value
         );
 
-    if(!weight) return;
+    if (!weight) return;
 
     let history =
         JSON.parse(
@@ -139,10 +121,10 @@ window.addWeight = function(){
 
     history.push({
 
-        weight,
+        weight: weight,
 
         date:
-        new Date()
+            new Date()
             .toLocaleDateString("pt-PT")
 
     });
@@ -159,12 +141,14 @@ window.addWeight = function(){
     renderWeights();
 };
 
-function renderWeights(){
+function renderWeights() {
 
     const list =
         document.getElementById(
             "weightHistory"
         );
+
+    if (!list) return;
 
     const history =
         JSON.parse(
@@ -184,10 +168,10 @@ function renderWeights(){
 }
 
 // ======================
-// IA
+// ANÁLISE IA
 // ======================
 
-window.analyzeMeal = async function(){
+window.analyzeMeal = async function() {
 
     const result =
         document.getElementById(
@@ -201,7 +185,7 @@ window.analyzeMeal = async function(){
             )
         );
 
-    if(!profile){
+    if (!profile) {
 
         result.innerHTML = `
             <div class="card">
@@ -218,7 +202,7 @@ window.analyzeMeal = async function(){
         .value
         .trim();
 
-    if(!meal){
+    if (!meal) {
 
         result.innerHTML = `
             <div class="card">
@@ -235,24 +219,20 @@ window.analyzeMeal = async function(){
         </div>
     `;
 
-    try{
+    try {
 
         const response =
             await fetch(
                 "https://panfood.jpina9.workers.dev",
                 {
-                    method:"POST",
-
-                    headers:{
+                    method: "POST",
+                    headers: {
                         "Content-Type":
-                        "application/json"
+                            "application/json"
                     },
-
-                    body:JSON.stringify({
-
+                    body: JSON.stringify({
                         meal,
                         profile
-
                     })
                 }
             );
@@ -260,22 +240,17 @@ window.analyzeMeal = async function(){
         const data =
             await response.json();
 
-        if(!data.success){
+        if (!data.success) {
 
             result.innerHTML = `
                 <div class="card">
-                    <h3>
-                        ❌ Erro IA
-                    </h3>
+                    <h3>❌ Erro IA</h3>
 
                     <pre style="
-                    white-space:pre-wrap;
-                    overflow:auto;">
-${JSON.stringify(
-    data.error,
-    null,
-    2
-)}
+                        white-space: pre-wrap;
+                        overflow:auto;
+                    ">
+${JSON.stringify(data.error, null, 2)}
                     </pre>
                 </div>
             `;
@@ -292,16 +267,14 @@ ${JSON.stringify(
 
                 <p>
                     Modelo:
-                    <strong>
-                        ${data.model}
-                    </strong>
+                    <strong>${data.model}</strong>
                 </p>
 
                 <hr>
 
                 <div style="
-                    white-space:pre-wrap;
-                    line-height:1.6;
+                    white-space: pre-wrap;
+                    line-height: 1.6;
                 ">
 ${data.analysis}
                 </div>
@@ -309,7 +282,7 @@ ${data.analysis}
             </div>
         `;
 
-    } catch(error){
+    } catch (error) {
 
         console.error(error);
 
