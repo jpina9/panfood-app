@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>PanFood</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+
+<h1>🥗 PanFood</h1>
+
+<nav>
+
+<button onclick="showPage('home')">
+🏠 Analisar
+</button>
+
+<button onclick="showPage('profile')">
+👤 Perfil
+</button>
+
+</nav>
+
+</header>
+
+<div class="container">
+
+<section id="homePage">
+
+<div class="card">
+
+<h2>O que vai comer?</h2>
+
+<textarea
+id="meal"
+placeholder="Ex: hambúrguer com batatas fritas e coca cola"
+></textarea>
+
+<button onclick="analyzeMeal()">
+Analisar
+</button>
+
+<div id="result"></div>
+
+</div>
+
+</section>
+
+<section
+id="profilePage"
+style="display:none"
+>
+
+<div class="card">
+
+<h2>Perfil</h2>
+
+<label>Peso Atual</label>
+<input id="weight" type="number">
+
+<label>Peso Objetivo</label>
+<input id="targetWeight" type="number">
+
+<label>Triglicéridos</label>
+<input id="triglycerides" type="number">
+
+<label>HDL</label>
+<input id="hdl" type="number">
+
+<label>
+<input
+id="pancreatitis"
+type="checkbox"
+>
+Histórico de Pancreatite
+</label>
+
+<button onclick="saveProfile()">
+Guardar Perfil
+</button>
+
+</div>
+
+<div class="card">
+
+<h2>Histórico de Peso</h2>
+
+<input
+id="newWeight"
+type="number"
+placeholder="Adicionar Peso"
+>
+
+<button onclick="addWeight()">
+Guardar Peso
+</button>
+
+<ul id="weightHistory"></ul>
+
+</div>
+
+</section>
+
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
