@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PanFood PWA</title>
+
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="style.css">
+
+<meta name="theme-color" content="#2E7D32">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PanFood">
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🥗 PanFood</h1>
+
+<div class="card">
+<h2>Perfil</h2>
+
+<label>Peso Atual</label>
+<input id="weight" type="number">
+
+<label>Objetivo</label>
+<input id="targetWeight" type="number">
+
+<label>Triglicéridos</label>
+<input id="triglycerides" type="number">
+
+<button onclick="saveProfile()">
+Guardar Perfil
+</button>
+</div>
+
+<div class="card">
+<h2>Analisar Refeição</h2>
+
+<textarea id="meal"
+placeholder="atum, salada, ameixa"></textarea>
+
+<button onclick="analyzeMeal()">
+Analisar
+</button>
+
+<div id="result"></div>
+</div>
+
+<div class="card">
+<h2>Histórico de Peso</h2>
+
+<input id="newWeight" type="number">
+
+<button onclick="addWeight()">
+Adicionar Peso
+</button>
+
+<ul id="weightHistory"></ul>
+</div>
+
+</div>
+
+<script src="app.js"></script>
+
+<script>
+if ("serviceWorker" in navigator) {
+ navigator.serviceWorker.register("./sw.js");
+}
+</script>
+
+</body>
+</html>
